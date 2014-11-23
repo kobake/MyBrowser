@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.provider.SyncStateContract.Constants;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
 
 public class MainActivity extends Activity {
 
 	private WebView mWebView;
+	private EditText mEditText;
 	
 	private static final String INITIAL_WEBSITE = "http://www.google.co.jp";
 	
@@ -21,6 +24,8 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		mEditText = (EditText)findViewById(R.id.editText1);
+		
 		mWebView = (WebView)findViewById(R.id.webView1);
 		mWebView.getSettings().setJavaScriptEnabled(true);
 		mWebView.setWebViewClient(new WebViewClient());
@@ -28,7 +33,14 @@ public class MainActivity extends Activity {
 		
 	}
 	
+	public void showWebsite(View button){
+		String url = mEditText.getText().toString().trim();
+		mWebView.loadUrl(url);		
+	}
 	
+	public void clearUrl(View v){
+		mEditText.setText("");
+	}
 
 	@Override
 	public void onBackPressed() {
