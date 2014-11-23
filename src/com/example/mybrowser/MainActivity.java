@@ -1,11 +1,13 @@
 package com.example.mybrowser;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.provider.SyncStateContract.Constants;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 public class MainActivity extends Activity {
 
@@ -13,14 +15,39 @@ public class MainActivity extends Activity {
 	
 	private static final String INITIAL_WEBSITE = "http://www.google.co.jp";
 	
+	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
 		mWebView = (WebView)findViewById(R.id.webView1);
+		mWebView.getSettings().setJavaScriptEnabled(true);
+		mWebView.setWebViewClient(new WebViewClient());
 		mWebView.loadUrl(INITIAL_WEBSITE);
+		
 	}
+	
+	
+
+	@Override
+	public void onBackPressed() {
+		if(mWebView.canGoBack()){
+			mWebView.goBack();
+			return;
+		}
+		else{
+			super.onBackPressed();
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		mWebView.stopLoading();
+		mWebView.destroy();
+	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
