@@ -92,13 +92,30 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_reload) {
+			mWebView.reload();
+			return true;
+		}
+		if (id == R.id.action_forward) {
+			mWebView.goForward();
+			return true;
+		}
+		if (id == R.id.action_backward) {
+			mWebView.goBack();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	// メニューの有効無効を切り替える
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem forwardItem = menu.findItem(R.id.action_forward);
+		MenuItem backwardItem = menu.findItem(R.id.action_backward);
+		forwardItem.setEnabled(mWebView.canGoForward());
+		backwardItem.setEnabled(mWebView.canGoBack());
+		return super.onPrepareOptionsMenu(menu);
+	}
+	
 }
