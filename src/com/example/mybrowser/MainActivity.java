@@ -3,6 +3,7 @@ package com.example.mybrowser;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.provider.SyncStateContract.Constants;
@@ -31,7 +32,15 @@ public class MainActivity extends Activity {
 		
 		mWebView = (WebView)findViewById(R.id.webView1);
 		mWebView.getSettings().setJavaScriptEnabled(true);
-		mWebView.setWebViewClient(new WebViewClient());
+		mWebView.setWebViewClient(new WebViewClient(){
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				super.onPageFinished(view, url);
+				ActionBar action = getActionBar();
+				action.setSubtitle(mWebView.getTitle());
+				mEditText.setText(url);
+			}
+		});
 		mWebView.loadUrl(INITIAL_WEBSITE);
 		
 	}
