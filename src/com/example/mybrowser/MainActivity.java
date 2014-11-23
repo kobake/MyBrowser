@@ -1,9 +1,12 @@
 package com.example.mybrowser;
 
+import java.util.regex.Pattern;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.provider.SyncStateContract.Constants;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +38,17 @@ public class MainActivity extends Activity {
 	
 	public void showWebsite(View button){
 		String url = mEditText.getText().toString().trim();
-		mWebView.loadUrl(url);		
+		if(!Patterns.WEB_URL.matcher(url).matches()){
+			mEditText.setError("Not a valid URL!");
+		}
+		else{
+			// http://dotinstall.com -> OK
+			// dotinstall.com -> OK
+			if(!url.startsWith("http://")){
+				url = "http://" + url;
+			}
+			mWebView.loadUrl(url);
+		}
 	}
 	
 	public void clearUrl(View v){
